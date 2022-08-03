@@ -2,7 +2,7 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 const bcrypt = require('bcrypt');
 
-class User extends Model {}
+class User extends Model { }
 
 User.init(
   {
@@ -34,7 +34,11 @@ User.init(
   },
   {
     // TODO: Add hooks here
-
+    hooks: {
+      beforeCreate: async (passwordData) => {
+        return passwordData.password = await bcrypt.hash(myPlaintextPassword, 10)
+      }
+    },
     sequelize,
     timestamps: false,
     freezeTableName: true,

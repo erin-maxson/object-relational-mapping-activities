@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const User = require('../../models/User');
 
 // TODO: Add comments describing the functionality of this `login` route
+// from the login api, try and pull userData based on email, if there is no userData with that information, show a 404 message
 router.post('/login', async (req, res) => {
   try {
     const userData = await User.findOne({ where: { email: req.body.email } });
@@ -15,6 +16,7 @@ router.post('/login', async (req, res) => {
       req.body.password,
       userData.password
     );
+    
     if (!validPassword) {
       res.status(400).json({ message: 'Login failed. Please try again!' });
       return;
